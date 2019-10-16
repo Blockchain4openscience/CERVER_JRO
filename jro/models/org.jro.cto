@@ -1,0 +1,139 @@
+/**
+ * Write your model definitions here
+ */
+
+namespace org.jro
+
+import composer.blockcerts.Certificate
+import composer.blockcerts.Issuer
+import composer.blockcerts.SignatureLines
+
+enum TypeRO {
+  o document
+  o code
+  o image
+  o data
+  o notes
+  o notebook
+  o other
+}
+
+enum TypeRP {
+  o editor
+  o author
+  o reviewer
+  o data
+}
+
+concept afiliation {
+  o String name
+  o String address
+  o String Iurl
+}
+
+// Represent a Researcher participant
+participant Researcher identified by researcherId {
+  o String researcherId
+  o String email
+  o String name
+  o String ipfsId optional
+  o afiliation institution
+  o Boolean correspAuth default = true
+  o Integer wallet default = 10
+}
+
+// Represent a Research Object assest
+asset ROJ identified by rojId {
+  o String rojId  //ipfs hash
+  o TypeRO typeRO default = "other" 
+  o String node 
+  o String description optional
+  o Integer reward default = 1
+  o Integer cost default = 1
+  o Integer countAccess default = 0
+  --> Researcher[] contributors
+  o String hash  optional //registry hash to verify against
+}
+
+asset cert identified by certId extends Certificate {
+  o String certId
+  --> ROJ rojId
+  --> Researcher author
+  o String certHash
+}
+
+// Add Researcher object asset
+transaction Add {
+  o String rojId  //ipfs hash
+  o String node
+  --> Researcher creator
+}
+
+// Enrich Research object asset
+// add Metadata  
+transaction Enrich {
+  --> ROJ rojId  
+  o TypeRO typeRO default = "other"
+  o String description 
+  --> Researcher creator
+}
+
+// Issue a certificate for the research object
+transaction issue {
+  o String certId
+  --> ROJ rojId
+  --> Researcher author
+}
+
+
+// find and verify research object asset
+// verify hash against the registry
+// query and verify through the front end application
+/*
+transaction FindResearchOJ {
+  o String researchObjId  //ipfs hash
+}
+*/
+
+/*
+// Represent a Disco asset
+asset Disco identified by discoId {
+  o String discoId
+  o String title
+  --> ResearchOJ[] researchObjs
+  --> Researcher   owner
+}
+*/
+
+/* -------------------------
+* Events
+-------------------------- */
+
+event WalletEvent {
+  --> Researcher claimer
+  o Integer oldBalance
+  o Integer newBalance
+}
+
+event CountEvent {
+  --> ROJ rojId
+  o String  description
+  o Integer oldCountAccess
+  o Integer newCountAccess
+}
+
+event ResearchOJHistoryResults {
+  o String[] results
+}
+
+event DiscoHistoryResults {
+  o String[] results
+}
+
+transaction ResearcherHistory {
+  o String researcherId
+}
+
+event ResearcherHistoryResults {
+  o String[] results
+}

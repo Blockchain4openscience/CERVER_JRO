@@ -1,0 +1,14 @@
+query selectHistorianRecordsByTrxId {
+  description: "Select historian records by transaction id"
+  statement:
+    SELECT org.hyperledger.composer.system.HistorianRecord
+    WHERE (transactionId == _$transactionId)
+}
+
+query selectResearchObjectsByContributor {
+  description: "Select research objects by contributor id"
+  statement:
+  	SELECT org.jro.ROJ
+  	WHERE (contributors CONTAINS (_$researcherId))
+}
+
