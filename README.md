@@ -11,12 +11,20 @@ First we need to intall the version of node and npm that is compatible with comp
 `````
 nvm install 8.9
 `````
+## Run IPFS daemon
+
+You need to install [IPFS locally](https://docs.ipfs.io/guides/guides/install/)
+
+```
+ipfs daemon
+```
+
 
 ## Fabric Network Design
 
 This step
 
-The [jro](https://github.com/Blockchain4openscience/CERVER_JRO/tree/master/jro) folder contains the bussines network definition and a bussiness network archive called __jro@0.1.1.bna__ generated from this definition . If you wish, you can generate a business network archive with:
+The [jro](https://github.com/Blockchain4openscience/jroBna/tree/master/jro) folder contains the bussines network definition and a bussiness network archive called __jro@0.0.3.bna__ generated from this definition . If you wish, you can generate a business network archive with:
 
 ```
 composer archive create -t dir -n .
@@ -40,12 +48,12 @@ We can start the local Fabric node with
 
 After these first steps you should have a folder called `certificates` with the connection profile `connection.json`, a certificate `Admin@org1.example.com-cert.pem` and a private key for the administrator of the Fabric node `114aab0e76bf0c78308f89efc4b8c9423e31568da0c340ca187a9b17aa9a4457_sk`.
 
-Also save into the folder `certificates` the script `startjro.sh` and the business network application file `jro@0.1.1.bna` found in this repo.
+Also save into the folder `certificates` the script `startjro.sh` and the business network application file `jro@0.0.3.bna` found in this repo.
 
 
 ## Deploying the smart contract and business logit onto the Fabric node.
 
-To deploy the business network application `jro@0.1.1.bna` we can use the following script,
+To deploy the business network application `jro@0.0.3.bna` we can use the following script,
 
 `````
 sh jrostart.sh
@@ -67,6 +75,17 @@ Additionally you can run hyperledger playground to see easily the changes in the
 ```
 composer-playground
 ```
+
+## Launch frontend
+
+Follow the [documentation](https://blockchain4openscience.github.io/jro-docs/#/) regarding [JRO Backend and Frontend](https://blockchain4openscience.github.io/jro-docs/#/getting-started/installation)
+
+Dont forget to activate the virtual enviorment created in your local JROBackend folder
+
+```
+source jro/bin/activate
+```
+
 
 ## Destroy a previous set up
 After testing the bna desgined with Composer and deployed onto Fabric it is important to tidy up by stopping fabric. Navigate to the folder where you initially started the Hyperledger Fabric network.
